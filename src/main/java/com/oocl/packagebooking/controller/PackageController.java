@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/api/packages")
+@RequestMapping(value = "/packages")
 public class PackageController extends BaseController<PackageBase, Long> {
 
     @Autowired
