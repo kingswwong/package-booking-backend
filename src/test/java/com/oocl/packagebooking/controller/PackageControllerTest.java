@@ -75,4 +75,16 @@ public class PackageControllerTest {
         resultActions.andExpect(status().isOk());
     }
 
+    @Test
+    void should_find_list_by_status() throws Exception{
+        PackageBase testPackage1 = new PackageBase("12700321541","Dean1","13365482484",20);
+        PackageBase testPackage2 = new PackageBase("12700321542","Dean2","13365482484",30);
+
+        testPackage1.setStatus(0);
+        testPackage2.setStatus(1);
+        when(packageBaseService.findAllByStatus(ArgumentMatchers.anyInt())).thenReturn(Arrays.asList(testPackage1));
+        ResultActions resultActions = mockMvc.perform(get("/packages?status=0"));
+        resultActions.andExpect(status().isOk())
+                .andExpect(jsonPath("$",hasSize(1)));
+    }
 }
