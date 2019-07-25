@@ -6,10 +6,34 @@ import com.oocl.packagebooking.repository.PackageBaseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+import java.util.List;
+
 @Service
 public class PackageBaseServiceImpl extends BaseServiceImpl<PackageBase,Long> implements PackageBaseService {
 
+    @Autowired
+    private PackageBaseRepository packageBaseRepository;
+
     public PackageBaseServiceImpl(@Autowired PackageBaseRepository packageBaseRepository) {
         super(packageBaseRepository);
+    }
+
+    @Override
+    public List<PackageBase> findAllByStatus(int status) {
+        return packageBaseRepository.findAllByStatus(status);
+    }
+
+    @Override
+    public PackageBase findByAppointmentAndUpdate(PackageBase packageBase) {
+        List<PackageBase> packageBases = packageBaseRepository.findAllByTrackingNumber(packageBase.getTrackingNumber());
+        if(packageBases.size() > 0){
+            PackageBase oldPackageBase = packageBases.get(0);
+            oldPackageBase.setAppointmentTime(packageBase.getAppointmentTime());
+            oldPackageBase.setStatus(1);
+            packageBaseRepository.save(oldPackageBase);
+            return oldPackageBase;
+        }
+        return null;
     }
 }

@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.util.Arrays;
+import java.util.Date;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
@@ -59,4 +60,19 @@ public class PackageControllerTest {
         resultActions.andExpect(status().isOk())
                 .andExpect(jsonPath("$",hasSize(3)));
     }
+
+    @Test
+    void should_update_a_package_status_to() throws Exception{
+        PackageBase testPackage1 = new PackageBase("12700321541","Dean1","13365482484",20);
+        testPackage1.setStatus(1);
+        testPackage1.setAppointmentTime(new Date());
+        String postData = "{\n" +
+                "\t\"trackingNumber\":\"13364523\",\n" +
+                "\t\"appointmentTime\": \"321654545455\"\n" +
+                "}";
+        when(packageBaseService.findByAppointmentAndUpdate(ArgumentMatchers.any())).thenReturn(testPackage1);
+        ResultActions resultActions = mockMvc.perform(post("/packages/appointment").contentType(MediaType.APPLICATION_JSON).content(postData));
+        resultActions.andExpect(status().isOk());
+    }
+
 }
