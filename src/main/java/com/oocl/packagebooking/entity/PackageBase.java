@@ -1,6 +1,7 @@
 package com.oocl.packagebooking.entity;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Table
 @Entity
@@ -12,6 +13,9 @@ public class PackageBase {
     private String recipient;
     private String phoneNumber;
     private double weight;
+    @Column(columnDefinition = "int default 0")
+    private int status; //0: 未取件 1：已预约 2已取件
+    private Date appointmentTime;
 
     public PackageBase() {
     }
@@ -61,5 +65,21 @@ public class PackageBase {
 
     public void setWeight(double weight) {
         this.weight = weight;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public Date getAppointmentTime() {
+        return appointmentTime;
+    }
+
+    public void setAppointmentTime(Date appointmentTime) {
+        this.appointmentTime = appointmentTime;
     }
 }
