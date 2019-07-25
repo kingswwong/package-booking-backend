@@ -70,7 +70,7 @@ public class PackageControllerTest {
                 "\t\"trackingNumber\":\"13364523\",\n" +
                 "\t\"appointmentTime\": \"321654545455\"\n" +
                 "}";
-        when(packageBaseService.findByAppointmentAndUpdate(ArgumentMatchers.any())).thenReturn(testPackage1);
+        when(packageBaseService.findAllByTrackingNumberAndUpdateStatus(ArgumentMatchers.any())).thenReturn(testPackage1);
         ResultActions resultActions = mockMvc.perform(post("/packages/appointment").contentType(MediaType.APPLICATION_JSON).content(postData));
         resultActions.andExpect(status().isOk());
     }

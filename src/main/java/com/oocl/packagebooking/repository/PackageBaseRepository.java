@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface PackageBaseRepository extends BaseRepository<PackageBase,Long> {
     List<PackageBase> findAllByStatus(int status);
-    List<PackageBase> findAllByTrackingNumberAndUpdateStatus(String trackingNumber);
+    List<PackageBase> findAllByTrackingNumber(String trackingNumber);
 }

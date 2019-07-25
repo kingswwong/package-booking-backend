@@ -1,5 +1,8 @@
 package com.oocl.packagebooking.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -9,12 +12,15 @@ public class PackageBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true)
     private String trackingNumber;
     private String recipient;
     private String phoneNumber;
     private double weight;
     @Column(columnDefinition = "int default 0")
     private int status; //0: 未取件 1：已预约 2已取件
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date appointmentTime;
 
     public PackageBase() {

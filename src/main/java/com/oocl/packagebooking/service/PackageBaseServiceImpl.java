@@ -6,6 +6,7 @@ import com.oocl.packagebooking.repository.PackageBaseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -26,9 +27,20 @@ public class PackageBaseServiceImpl extends BaseServiceImpl<PackageBase,Long> im
 
     @Override
     public PackageBase findAllByTrackingNumberAndUpdateStatus(PackageBase packageBase) {
-        List<PackageBase> packageBases = packageBaseRepository.findAllByTrackingNumberAndUpdateStatus(packageBase.getTrackingNumber());
+        List<PackageBase> packageBases = packageBaseRepository.findAllByTrackingNumber(packageBase.getTrackingNumber());
+        if(packageBase.getAppointmentTime() != null){
+            Date date = packageBase.getAppointmentTime();
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String hour = simpleDateFormat.format(date).split(" ")[1].split(":")[0];
+            if(!(Integer.parseInt(hour) >= 9 && Integer.parseInt(hour) <= 18)) {
+                return null;
+            }
+        }
         if(packageBases.size() > 0){
             PackageBase oldPackageBase = packageBases.get(0);
+            if(oldPackageBase.getStatus() == 2){
+                return null;
+            }
             oldPackageBase.setAppointmentTime(packageBase.getAppointmentTime());
             oldPackageBase.setStatus(packageBase.getStatus());
             packageBaseRepository.save(oldPackageBase);
