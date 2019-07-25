@@ -13,6 +13,9 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
+import java.util.Arrays;
+
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -45,5 +48,15 @@ public class PackageControllerTest {
         resultActions.andExpect(status().isOk());
     }
 
+    @Test
+    void should_find_all_package() throws Exception{
+        PackageBase testPackage1 = new PackageBase("12700321541","Dean1","13365482484",20);
+        PackageBase testPackage2 = new PackageBase("12700321542","Dean2","13365482484",30);
+        PackageBase testPackage3 = new PackageBase("12700321543","Dean3","13365482484",40);
 
+        when(packageBaseService.findAll()).thenReturn(Arrays.asList(testPackage1,testPackage2,testPackage3));
+        ResultActions resultActions = mockMvc.perform(get("/packages"));
+        resultActions.andExpect(status().isOk())
+                .andExpect(jsonPath("$",hasSize(3)));
+    }
 }
