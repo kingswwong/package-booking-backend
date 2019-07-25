@@ -24,8 +24,8 @@ public class PackageController extends BaseController<PackageBase, Long> {
         return packageBaseService.findAllByStatus(status);
     }
 
-    @PostMapping("/appointment")
+    @PutMapping
     public PackageBase findByAppointmentAndUpdate(@RequestBody PackageBase packageBase){
-        return packageBaseService.findByAppointmentAndUpdate(packageBase);
+        return packageBaseService.findAllByTrackingNumberAndUpdateStatus(packageBase);
     }
 }

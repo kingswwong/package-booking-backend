@@ -25,12 +25,12 @@ public class PackageBaseServiceImpl extends BaseServiceImpl<PackageBase,Long> im
     }
 
     @Override
-    public PackageBase findByAppointmentAndUpdate(PackageBase packageBase) {
-        List<PackageBase> packageBases = packageBaseRepository.findAllByTrackingNumber(packageBase.getTrackingNumber());
+    public PackageBase findAllByTrackingNumberAndUpdateStatus(PackageBase packageBase) {
+        List<PackageBase> packageBases = packageBaseRepository.findAllByTrackingNumberAndUpdateStatus(packageBase.getTrackingNumber());
         if(packageBases.size() > 0){
             PackageBase oldPackageBase = packageBases.get(0);
             oldPackageBase.setAppointmentTime(packageBase.getAppointmentTime());
-            oldPackageBase.setStatus(1);
+            oldPackageBase.setStatus(packageBase.getStatus());
             packageBaseRepository.save(oldPackageBase);
             return oldPackageBase;
         }
