@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface PackageBaseService extends BaseService<PackageBase,Long> {
     List<PackageBase> findAllByStatus(int status);
-    PackageBase findAllByTrackingNumberAndUpdateStatus(PackageBase packageBase);
+    PackageBase findAllByTrackingNumberAndUpdateStatus(PackageBase packageBase)  throws Exception ;
 }

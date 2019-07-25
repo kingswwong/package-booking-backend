@@ -25,7 +25,7 @@ public class PackageController extends BaseController<PackageBase, Long> {
     }
 
     @PutMapping
-    public PackageBase findByAppointmentAndUpdate(@RequestBody PackageBase packageBase){
+    public PackageBase findByAppointmentAndUpdate(@RequestBody PackageBase packageBase) throws Exception{
         return packageBaseService.findAllByTrackingNumberAndUpdateStatus(packageBase);
     }
 }

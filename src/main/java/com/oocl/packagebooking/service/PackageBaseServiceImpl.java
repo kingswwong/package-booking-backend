@@ -2,6 +2,7 @@ package com.oocl.packagebooking.service;
 
 import com.oocl.packagebooking.base.BaseServiceImpl;
 import com.oocl.packagebooking.entity.PackageBase;
+import com.oocl.packagebooking.exception.PackageNotFoundException;
 import com.oocl.packagebooking.repository.PackageBaseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,7 +27,7 @@ public class PackageBaseServiceImpl extends BaseServiceImpl<PackageBase,Long> im
     }
 
     @Override
-    public PackageBase findAllByTrackingNumberAndUpdateStatus(PackageBase packageBase) {
+    public PackageBase findAllByTrackingNumberAndUpdateStatus(PackageBase packageBase) throws Exception {
         List<PackageBase> packageBases = packageBaseRepository.findAllByTrackingNumber(packageBase.getTrackingNumber());
         if(packageBase.getAppointmentTime() != null){
             Date date = packageBase.getAppointmentTime();
@@ -39,13 +40,13 @@ public class PackageBaseServiceImpl extends BaseServiceImpl<PackageBase,Long> im
         if(packageBases.size() > 0){
             PackageBase oldPackageBase = packageBases.get(0);
             if(oldPackageBase.getStatus() == 2){
-                return null;
+                throw new PackageNotFoundException();
             }
             oldPackageBase.setAppointmentTime(packageBase.getAppointmentTime());
             oldPackageBase.setStatus(packageBase.getStatus());
             packageBaseRepository.save(oldPackageBase);
             return oldPackageBase;
         }
-        return null;
+        throw new PackageNotFoundException();
     }
 }
